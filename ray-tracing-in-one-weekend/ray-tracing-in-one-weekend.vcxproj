@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera\camera.h" />
     <ClInclude Include="src\ray\hittable.h" />
     <ClInclude Include="src\ray\hittable_list.h" />
     <ClInclude Include="src\ray\ray.h" />

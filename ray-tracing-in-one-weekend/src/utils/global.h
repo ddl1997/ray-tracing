@@ -4,7 +4,8 @@
 #include <cmath>
 #include <limits>
 #include <memory>
-
+#include <cstdlib>
+#include <Eigen/Dense>
 
 // Usings
 
@@ -25,6 +26,22 @@ inline float degrees_to_radians(float degrees) {
 
 inline float radians_to_degrees(float radians) {
     return radians * 180.0 / pi;
+}
+
+inline float random_float()
+{
+    return rand() / (RAND_MAX + 1);
+}
+
+inline float random_float(float min, float max)
+{
+    return min + (max - min) * random_float();
+}
+
+inline float clamp(float x, float min, float max) {
+    if (x < min) return min;
+    if (x > max) return max;
+    return x;
 }
 
 // Common Headers

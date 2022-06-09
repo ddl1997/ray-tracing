@@ -13,6 +13,7 @@
 
 #include "stb_image.h"
 #include "stb_image_write.h"
+#include "global.h"
 
 Image::Image(int width, int height)
 {
@@ -159,9 +160,9 @@ void Image::save(std::string filename)
         {
             int srcIndex = parseId(x, y),
                 dstIndex = parseId(x, height - y - 1);
-            unsigned char r = static_cast<unsigned char>(buf[srcIndex].x() * 255.999);
-            unsigned char g = static_cast<unsigned char>(buf[srcIndex].y() * 255.999);
-            unsigned char b = static_cast<unsigned char>(buf[srcIndex].z() * 255.999);
+            unsigned char r = static_cast<unsigned char>(clamp(buf[srcIndex].x(), 0.0, 0.999) * 255.999);
+            unsigned char g = static_cast<unsigned char>(clamp(buf[srcIndex].y(), 0.0, 0.999) * 255.999);
+            unsigned char b = static_cast<unsigned char>(clamp(buf[srcIndex].z(), 0.0, 0.999) * 255.999);
             data[dstIndex * 3] = r;
             data[dstIndex * 3 + 1] = g;
             data[dstIndex * 3 + 2] = b;

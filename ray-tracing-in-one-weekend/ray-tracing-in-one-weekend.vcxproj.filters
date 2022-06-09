@@ -31,6 +31,9 @@
     <Filter Include="源文件\src\ray">
       <UniqueIdentifier>{095a882f-89eb-4ea7-9668-1b0f9dadfc59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\src\camera">
+      <UniqueIdentifier>{7182d2a5-10c3-40fc-863a-3b8e9930744e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\utils\image.h">
@@ -50,6 +53,9 @@
     </ClInclude>
     <ClInclude Include="src\utils\global.h">
       <Filter>头文件\src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera\camera.h">
+      <Filter>头文件\src\camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
