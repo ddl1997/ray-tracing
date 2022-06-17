@@ -8,7 +8,7 @@ class Material;
 struct HitRecord {
     Eigen::Vector3f p;
     Eigen::Vector3f normal;
-    shared_ptr<Material> mat_ptr;
+    std::shared_ptr<Material> mat_ptr;
     float t;
     bool front_face;
 

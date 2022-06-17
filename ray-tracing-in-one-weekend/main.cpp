@@ -4,6 +4,7 @@
 #include "src/ray/sphere.h"
 #include "src/camera/camera.h"
 #include "src/utils/global.h"
+#include "src/utils/material.h"
 #include <iostream>
 
 float hit_sphere(const Eigen::Vector3f& center, float radius, const Ray& r) {
@@ -31,8 +32,13 @@ Eigen::Vector3f ray_color(const Ray& r, const Hittable& world, int depth)
     float bias = 0.001;
     if (world.hit(r, bias, FLT_MAX, rec)) 
     {
-        Eigen::Vector3f target = rec.p + random_in_hemisphere(rec.normal);
-        return 0.5 * ray_color(Ray(rec.p, target - rec.p), world, depth - 1);
+        Ray scattered;
+        Eigen::Vector3f attenuation;
+        if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+            return multi_respectively(attenuation, ray_color(scattered, world, depth - 1));
+        return Eigen::Vector3f(0, 0, 0);
+        //Eigen::Vector3f target = rec.p + random_in_hemisphere(rec.normal);
+        //return 0.5 * ray_color(Ray(rec.p, target - rec.p), world, depth - 1);
     }
     Eigen::Vector3f unit_direction = r.direction().normalized();
     float t = 0.5 * (unit_direction.y() + 1.0);
@@ -50,8 +56,18 @@ int main() {
 
     // World
     HittableList world;
-    world.add(make_shared<Sphere>(Eigen::Vector3f(0, 0, -1), 0.5));
-    world.add(make_shared<Sphere>(Eigen::Vector3f(0, -100.5, -1), 100));
+    /*world.add(make_shared<Sphere>(Eigen::Vector3f(0, 0, -1), 0.5));
+    world.add(make_shared<Sphere>(Eigen::Vector3f(0, -100.5, -1), 100));*/
+
+    auto material_ground = make_shared<Lambertian>(Eigen::Vector3f(0.8, 0.8, 0.0));
+    auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.7, 0.3, 0.3));
+    auto material_left = make_shared<Metal>(Eigen::Vector3f(0.8, 0.8, 0.8), 0.3);
+    auto material_right = make_shared<Metal>(Eigen::Vector3f(0.8, 0.6, 0.2), 1.0);
+
+    world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, 0.0, -1.0), 0.5, material_center));
+    world.add(make_shared<Sphere>(Eigen::Vector3f(-1.0, 0.0, -1.0), 0.5, material_left));
+    world.add(make_shared<Sphere>(Eigen::Vector3f(1.0, 0.0, -1.0), 0.5, material_right));
 
     // Camera
     Camera cam;

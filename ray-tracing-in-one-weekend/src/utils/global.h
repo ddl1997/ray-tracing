@@ -21,6 +21,7 @@ const float flt_inf = std::numeric_limits<double>::infinity();
 const float pi = 3.1415926535897932385;
 
 // Utility Functions
+//**************************************************************************************************
 
 inline float degrees_to_radians(float degrees) {
     return degrees * pi / 180.0;
@@ -29,6 +30,15 @@ inline float degrees_to_radians(float degrees) {
 inline float radians_to_degrees(float radians) {
     return radians * 180.0 / pi;
 }
+
+inline float clamp(float x, float min, float max) {
+    if (x < min) return min;
+    if (x > max) return max;
+    return x;
+}
+
+// Random Functions
+//**************************************************************************************************
 
 inline float random_float()
 {
@@ -69,16 +79,29 @@ inline Eigen::Vector3f random_in_hemisphere(const Eigen::Vector3f& normal)
         return -in_unit_sphere;
 }
 
-inline float clamp(float x, float min, float max) {
-    if (x < min) return min;
-    if (x > max) return max;
-    return x;
-}
+// Vector Functions
+//**************************************************************************************************
 
 inline Eigen::Vector3f gamma_correction(Eigen::Vector3f vec, float gamma)
 {
     float power = 1.0 / gamma;
     return Eigen::Vector3f(powf(vec.x(), power), powf(vec.y(), power), powf(vec.z(), power));
+}
+
+inline bool near_zero(Eigen::Vector3f vec)
+{
+    const auto s = 1e-8;
+    return (fabs(vec.x()) < s) && (fabs(vec.y()) < s) && (fabs(vec.z()) < s);
+}
+
+inline Eigen::Vector3f reflect(const Eigen::Vector3f& v, const Eigen::Vector3f& n)
+{
+    return v - 2 * v.dot(n) * n;
+}
+
+inline Eigen::Vector3f multi_respectively(const Eigen::Vector3f v1, const Eigen::Vector3f v2)
+{
+    return Eigen::Vector3f(v1.x() * v2.x(), v1.y() * v2.y(), v1.z() * v2.z());
 }
 
 #endif

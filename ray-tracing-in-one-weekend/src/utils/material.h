@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "../ray/ray.h"
+//#include "../ray/hittable.h"
 
 struct HitRecord;
 
@@ -20,7 +21,10 @@ public:
     virtual bool scatter(
         const Ray& r_in, const HitRecord& rec, Eigen::Vector3f& attenuation, Ray& scattered
     ) const override {
-        auto scatter_direction = rec.normal + random_unit_vector();
+        Eigen::Vector3f scatter_direction = rec.normal + random_vec3f().normalized();
+
+        if (near_zero(scatter_direction))
+            scatter_direction = rec.normal;
         scattered = Ray(rec.p, scatter_direction);
         attenuation = albedo;
         return true;
@@ -28,6 +32,24 @@ public:
 
 public:
     Eigen::Vector3f albedo;
+};
+
+class Metal : public Material {
+public:
+    Metal(const Eigen::Vector3f& a, float f) : albedo(a), fuzz(f < 1 ? f : 1) {}
+
+    virtual bool scatter(
+        const Ray& r_in, const HitRecord& rec, Eigen::Vector3f& attenuation, Ray& scattered
+    ) const override {
+        Eigen::Vector3f reflected = reflect(r_in.direction().normalized(), rec.normal);
+        scattered = Ray(rec.p, reflected + fuzz * random_in_unit_sphere());
+        attenuation = albedo;
+        return true;
+    }
+
+public:
+    Eigen::Vector3f albedo;
+    float fuzz;
 };
 
 #endif
