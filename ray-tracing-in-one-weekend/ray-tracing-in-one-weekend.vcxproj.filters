@@ -57,6 +57,9 @@
     <ClInclude Include="src\camera\camera.h">
       <Filter>头文件\src\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\material.h">
+      <Filter>头文件\src\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\image.cpp">

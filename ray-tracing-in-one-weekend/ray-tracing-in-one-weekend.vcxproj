@@ -150,6 +150,7 @@
     <ClInclude Include="src\ray\sphere.h" />
     <ClInclude Include="src\utils\global.h" />
     <ClInclude Include="src\utils\image.h" />
+    <ClInclude Include="src\utils\material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
