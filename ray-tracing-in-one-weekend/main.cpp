@@ -60,9 +60,12 @@ int main() {
     world.add(make_shared<Sphere>(Eigen::Vector3f(0, -100.5, -1), 100));*/
 
     auto material_ground = make_shared<Lambertian>(Eigen::Vector3f(0.8, 0.8, 0.0));
-    auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.7, 0.3, 0.3));
-    auto material_left = make_shared<Metal>(Eigen::Vector3f(0.8, 0.8, 0.8), 0.3);
-    auto material_right = make_shared<Metal>(Eigen::Vector3f(0.8, 0.6, 0.2), 1.0);
+    auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.1, 0.2, 0.5));
+    //auto material_center = make_shared<Dielectric>(1.5);
+    auto material_left = make_shared<Dielectric>(1.5);
+    /*auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.7, 0.3, 0.3));
+    auto material_left = make_shared<Metal>(Eigen::Vector3f(0.8, 0.8, 0.8), 0.3);*/
+    auto material_right = make_shared<Metal>(Eigen::Vector3f(0.8, 0.6, 0.2), 0.0);
 
     world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, 0.0, -1.0), 0.5, material_center));
@@ -74,7 +77,7 @@ int main() {
 
     // Render
 
-    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
+    std::cout << image_width << " " << image_height << "\n255\n";
     Image img(image_width, image_height);
     float scale = 1.0 / samples_per_pixel;
     for (int j = image_height - 1; j >= 0; --j) {

@@ -1,4 +1,4 @@
-#ifndef MATERIAL_H
+﻿#ifndef MATERIAL_H
 #define MATERIAL_H
 
 #include "global.h"
@@ -49,7 +49,44 @@ public:
 
 public:
     Eigen::Vector3f albedo;
-    float fuzz;
+    float fuzz; // 模糊系数
+};
+
+// 绝缘体
+class Dielectric : public Material {
+public:
+    Dielectric(float index_of_refraction) : ir(index_of_refraction) {}
+
+    virtual bool scatter(
+        const Ray& r_in, const HitRecord& rec, Eigen::Vector3f& attenuation, Ray& scattered
+    ) const override {
+        attenuation = Eigen::Vector3f(1.0, 1.0, 1.0);
+        // 若为front_face，则光线从（一般为）空气进入该材质物体，折射率之比为空气折射率/材质折射率，即为ir的倒数
+        // 若不为front_face，则光线从该材质物体进入（一般为）空气，折射率之比ir
+        float refraction_ratio = rec.front_face ? (1.0 / ir) : ir;
+
+        Eigen::Vector3f unit_direction = r_in.direction().normalized();
+        float cos_theta = fmin(-unit_direction.dot(rec.normal), 1.0);
+        float sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+
+        // theta：入射光与向内法线的夹角；theta_prime：折射光与向内法线的夹角
+        // sin(theta_prime) = eta * sin(theta) / eta_prime
+        // sin(theta_prime) > 0 => total internal reflection 全内反射，折射率大->折射率小
+        bool cannot_refract = refraction_ratio * sin_theta > 1.0;
+        Eigen::Vector3f direction;
+
+        if (cannot_refract)
+            direction = reflect(unit_direction, rec.normal);
+        else
+            direction = refract(unit_direction, rec.normal, refraction_ratio);
+
+        scattered = Ray(rec.p, direction);
+        Eigen::Vector3f refracted = refract(unit_direction, rec.normal, refraction_ratio);
+        return true;
+    }
+
+public:
+    float ir; // Index of Refraction 材质折射率/光线传输介质折射率
 };
 
 #endif

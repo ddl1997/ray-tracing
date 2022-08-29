@@ -104,7 +104,10 @@ inline Eigen::Vector3f multi_respectively(const Eigen::Vector3f v1, const Eigen:
     return Eigen::Vector3f(v1.x() * v2.x(), v1.y() * v2.y(), v1.z() * v2.z());
 }
 
-inline Eigen::Vector3f refract(const Eigen::Vector3f& uv, const Eigen::Vector3f& n, double etai_over_etat) {
+// uv : in_light_dir
+// etai_over_etat : in_eta / out_eta
+// in_eta * sin(theta) = out_eta * sin(theta_prime)
+inline Eigen::Vector3f refract(const Eigen::Vector3f& uv, const Eigen::Vector3f& n, float etai_over_etat) {
     auto cos_theta = fmin(-uv.dot(n), 1.0);
     Eigen::Vector3f r_out_perp = etai_over_etat * (uv + cos_theta * n);
     Eigen::Vector3f r_out_parallel = -sqrt(fabs(1.0 - powf(r_out_perp.norm(), 2))) * n;

@@ -1,4 +1,4 @@
-#ifndef HITTABLE_H
+﻿#ifndef HITTABLE_H
 #define HITTABLE_H
 
 #include "ray.h"
@@ -13,6 +13,7 @@ struct HitRecord {
     bool front_face;
 
     inline void set_face_normal(const Ray& r, const Eigen::Vector3f& outward_normal) {
+        // 入射光线与表面法线夹角为锐角即为front_face
         front_face = r.direction().dot(outward_normal) < 0;
         normal = front_face ? outward_normal : -outward_normal;
     }
