@@ -70,6 +70,8 @@ int main() {
     world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, 0.0, -1.0), 0.5, material_center));
     world.add(make_shared<Sphere>(Eigen::Vector3f(-1.0, 0.0, -1.0), 0.5, material_left));
+    // 制造空心球，半径为负可使法向向内
+    world.add(make_shared<Sphere>(Eigen::Vector3f(-1.0, 0.0, -1.0), -0.4, material_left));
     world.add(make_shared<Sphere>(Eigen::Vector3f(1.0, 0.0, -1.0), 0.5, material_right));
 
     // Camera

@@ -75,7 +75,8 @@ public:
         bool cannot_refract = refraction_ratio * sin_theta > 1.0;
         Eigen::Vector3f direction;
 
-        if (cannot_refract)
+        if (cannot_refract || 
+            reflectance(cos_theta, refraction_ratio) > random_float()) // 部分反射，部分折射
             direction = reflect(unit_direction, rec.normal);
         else
             direction = refract(unit_direction, rec.normal, refraction_ratio);
@@ -87,6 +88,14 @@ public:
 
 public:
     float ir; // Index of Refraction 材质折射率/光线传输介质折射率
+
+private:
+    static float reflectance(float cosine, float ref_idx) {
+        // Use Schlick's approximation for reflectance.
+        auto r0 = (1 - ref_idx) / (1 + ref_idx);
+        r0 = r0 * r0;
+        return r0 + (1 - r0) * pow((1 - cosine), 5);
+    }
 };
 
 #endif
