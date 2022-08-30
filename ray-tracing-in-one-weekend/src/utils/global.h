@@ -15,6 +15,9 @@ using std::shared_ptr;
 using std::make_shared;
 using std::sqrt;
 
+// Type define
+typedef Eigen::Vector3f vec3f;
+
 // Constants
 
 const float flt_inf = std::numeric_limits<double>::infinity();
@@ -77,6 +80,17 @@ inline Eigen::Vector3f random_in_hemisphere(const Eigen::Vector3f& normal)
         return in_unit_sphere;
     else
         return -in_unit_sphere;
+}
+
+inline vec3f random_in_unit_disk() {
+    float angle = random_float() * 2 * pi;
+    vec3f p = vec3f(cosf(angle), sinf(angle), 0);
+    /*while (true) {
+        auto p = vec3f(random_float(-1, 1), random_float(-1, 1), 0);
+        if (p.norm() >= 1) continue;
+        return p;
+    }*/
+    return p;
 }
 
 // Vector Functions
