@@ -102,37 +102,38 @@ int main() {
     const int samples_per_pixel = 20;
     const int max_depth = 10;*/
     const auto aspect_ratio = 3.0 / 2.0;
-    const int image_width = 1200;
+    const int image_width = 600;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 500;
-    const int max_depth = 50;
+    const int samples_per_pixel = 50;
+    const int max_depth = 10;
 
     // World
-    HittableList world = random_scene();
+    HittableList world;
+    //HittableList world = random_scene();
 
-    //auto material_ground = make_shared<Lambertian>(Eigen::Vector3f(0.8, 0.8, 0.0));
-    //auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.1, 0.2, 0.5));
-    //auto material_left = make_shared<Dielectric>(1.5);
-    //auto material_right = make_shared<Metal>(Eigen::Vector3f(0.8, 0.6, 0.2), 0.0);
+    auto material_ground = make_shared<Lambertian>(Eigen::Vector3f(0.8, 0.8, 0.0));
+    auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.1, 0.2, 0.5));
+    auto material_left = make_shared<Dielectric>(1.5);
+    auto material_right = make_shared<Metal>(Eigen::Vector3f(0.8, 0.6, 0.2), 0.0);
 
-    //world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, -100.5, -1.0), 100.0, material_ground));
-    //world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, 0.0, -1.0), 0.5, material_center));
-    //world.add(make_shared<Sphere>(Eigen::Vector3f(-1.0, 0.0, -1.0), 0.5, material_left));
-    //// 制造空心球，半径为负可使法向向内
+    world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(make_shared<Sphere>(Eigen::Vector3f(0.0, 0.0, -1.0), 0.5, material_center));
+    world.add(make_shared<Sphere>(Eigen::Vector3f(-1.0, 0.0, -1.0), 0.5, material_left));
+    // 制造空心球，半径为负可使法向向内
     //world.add(make_shared<Sphere>(Eigen::Vector3f(-1.0, 0.0, -1.0), -0.4, material_left));
-    //world.add(make_shared<Sphere>(Eigen::Vector3f(1.0, 0.0, -1.0), 0.5, material_right));
+    world.add(make_shared<Sphere>(Eigen::Vector3f(1.0, 0.0, -1.0), 0.5, material_right));
 
     // Camera
-    /*vec3f lookfrom(3, 3, 2);
+    vec3f lookfrom(3, 3, 2);
     vec3f lookat(0, 0, -1);
     vec3f vup(0, 1, 0);
     auto dist_to_focus = (lookfrom - lookat).norm();
-    auto aperture = 2.0;*/
-    vec3f lookfrom(13, 2, 3);
+    auto aperture = 2.0;
+    /*vec3f lookfrom(13, 2, 3);
     vec3f lookat(0, 0, 0);
     vec3f vup(0, 1, 0);
     auto dist_to_focus = 10.0;
-    auto aperture = 0.1;
+    auto aperture = 0.1;*/
 
     Camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
 
