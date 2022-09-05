@@ -26,11 +26,13 @@ public:
         float vfov, // vertical field-of-view in degrees
         float aspect_ratio, // width / height
         float aperture, // 光圈大小
-        float focus_dist // 对焦距离
+        float focus_dist, // 对焦距离
         //focal length焦距和focus distance对焦距离的区别可见
         // https://www.zhihu.com/question/29643982
         // 和
         // https://blog.csdn.net/cpongo1/article/details/114844138
+        float time_open,
+        float time_close
     ) {
         auto theta = degrees_to_radians(vfov);
         auto h = tan(theta / 2);
@@ -48,6 +50,8 @@ public:
         lower_left_corner = origin - horizontal / 2 - vertical / 2 - focus_dist * w;
 
         lens_radius = aperture / 2;
+        this->time_open = time_open;
+        this->time_close = time_close;
     }
 
     Ray get_ray(float s, float t) const {
@@ -57,7 +61,8 @@ public:
 
         return Ray(
             origin + offset,
-            lower_left_corner + s * horizontal + t * vertical - origin - offset
+            lower_left_corner + s * horizontal + t * vertical - origin - offset,
+            random_float(time_open, time_close)
         );
     }
 
@@ -67,6 +72,7 @@ private:
     vec3f horizontal;
     vec3f vertical;
     vec3f u, v, w;
-    double lens_radius;
+    float lens_radius;
+    float time_open, time_close; // 开关快门时间
 };
 #endif

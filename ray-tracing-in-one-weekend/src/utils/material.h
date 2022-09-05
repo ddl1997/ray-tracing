@@ -25,7 +25,7 @@ public:
 
         if (near_zero(scatter_direction))
             scatter_direction = rec.normal;
-        scattered = Ray(rec.p, scatter_direction);
+        scattered = Ray(rec.p, scatter_direction, r_in.time());
         attenuation = albedo;
         return true;
     }
@@ -42,7 +42,7 @@ public:
         const Ray& r_in, const HitRecord& rec, Eigen::Vector3f& attenuation, Ray& scattered
     ) const override {
         Eigen::Vector3f reflected = reflect(r_in.direction().normalized(), rec.normal);
-        scattered = Ray(rec.p, reflected + fuzz * random_in_unit_sphere());
+        scattered = Ray(rec.p, reflected + fuzz * random_in_unit_sphere(), r_in.time());
         attenuation = albedo;
         return true;
     }
@@ -81,7 +81,7 @@ public:
         else
             direction = refract(unit_direction, rec.normal, refraction_ratio);
 
-        scattered = Ray(rec.p, direction);
+        scattered = Ray(rec.p, direction, r_in.time());
         Eigen::Vector3f refracted = refract(unit_direction, rec.normal, refraction_ratio);
         return true;
     }
