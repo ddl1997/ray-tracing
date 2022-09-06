@@ -19,6 +19,7 @@ public:
 
     virtual bool hit(
         const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
+    virtual bool bounding_box(float time0, float time1, Aabb& output_box) const override;
 
 public:
     std::vector<shared_ptr<Hittable>> objects;
@@ -38,6 +39,21 @@ bool HittableList::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
     }
 
     return hit_anything;
+}
+
+bool HittableList::bounding_box(float time0, float time1, Aabb& output_box) const {
+    if (objects.empty()) return false;
+
+    Aabb temp_box;
+    bool first_box = true;
+
+    for (const auto& object : objects) {
+        if (!object->bounding_box(time0, time1, temp_box)) return false;
+        output_box = first_box ? temp_box : output_box & temp_box;
+        first_box = false;
+    }
+
+    return true;
 }
 
 #endif

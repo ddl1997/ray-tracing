@@ -144,6 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\bvh\aabb.h" />
+    <ClInclude Include="src\bvh\bvh.h" />
     <ClInclude Include="src\camera\camera.h" />
     <ClInclude Include="src\objects\moving_sphere.h" />
     <ClInclude Include="src\objects\sphere.h" />
@@ -156,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\bvh\bvh.cpp" />
     <ClCompile Include="src\utils\image.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

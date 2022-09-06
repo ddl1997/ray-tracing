@@ -14,6 +14,7 @@ public:
 
     virtual bool hit(
         const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
+    virtual bool bounding_box(float time0, float time1, Aabb& output_box) const override;
 
     vec3f center(float time) const;
 
@@ -52,6 +53,18 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
     rec.set_face_normal(r, outward_normal);
     rec.mat_ptr = mat_ptr;
 
+    return true;
+}
+
+bool MovingSphere::bounding_box(float time0, float time1, Aabb& output_box) const
+{
+    Aabb box0(
+        center(time0) - vec3f(radius, radius, radius),
+        center(time0) + vec3f(radius, radius, radius));
+    Aabb box1(
+        center(time1) - vec3f(radius, radius, radius),
+        center(time1) + vec3f(radius, radius, radius));
+    output_box = box0 & box1;
     return true;
 }
 

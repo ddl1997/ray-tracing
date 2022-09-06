@@ -21,17 +21,17 @@ typedef Eigen::Vector3f vec3f;
 // Constants
 
 const float flt_inf = std::numeric_limits<double>::infinity();
-const float pi = 3.1415926535897932385;
+const float PI = 3.1415926535897932385;
 
 // Utility Functions
 //**************************************************************************************************
 
 inline float degrees_to_radians(float degrees) {
-    return degrees * pi / 180.0;
+    return degrees * PI / 180.0;
 }
 
 inline float radians_to_degrees(float radians) {
-    return radians * 180.0 / pi;
+    return radians * 180.0 / PI;
 }
 
 inline float clamp(float x, float min, float max) {
@@ -53,6 +53,11 @@ inline float random_float(float min, float max)
     return min + (max - min) * random_float();
 }
 
+inline int random_int(int min, int max)
+{
+    return static_cast<int>(random_float(min, max + 1));
+}
+
 inline Eigen::Vector3f random_vec3f()
 {
     return Eigen::Vector3f(random_float(), random_float(), random_float());
@@ -65,14 +70,15 @@ inline Eigen::Vector3f random_vec3f(float min, float max)
 
 inline Eigen::Vector3f random_in_unit_sphere()
 {
-    while (true) {
+    /*while (true) {
         auto p = random_vec3f(-1, 1);
         if (p.norm() >= 1) continue;
         return p;
-    }
+    }*/
+    float u = random_float(), v = random_float(-1, 1), r = sqrt(1 - v * v);
+    Eigen::Vector3f ref = Eigen::Vector3f{ r * cos(2 * PI * u), v, r * sin(2 * PI * u) };
 }
 
-// TODO: 半球面cos分布（证明）
 inline Eigen::Vector3f random_in_hemisphere(const Eigen::Vector3f& normal)
 {
     Eigen::Vector3f in_unit_sphere = random_in_unit_sphere();
@@ -83,7 +89,7 @@ inline Eigen::Vector3f random_in_hemisphere(const Eigen::Vector3f& normal)
 }
 
 inline vec3f random_in_unit_disk() {
-    float angle = random_float() * 2 * pi;
+    float angle = random_float() * 2 * PI;
     vec3f p = vec3f(cosf(angle), sinf(angle), 0);
     /*while (true) {
         auto p = vec3f(random_float(-1, 1), random_float(-1, 1), 0);

@@ -37,6 +37,12 @@
     <Filter Include="头文件\src\objects">
       <UniqueIdentifier>{48dc5aac-df70-4dda-bea8-0e337914374d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\src\bvh">
+      <UniqueIdentifier>{38a2ecae-3403-4658-9a85-1313ffdec860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\bvh">
+      <UniqueIdentifier>{fa4c8e5f-1878-4cad-b902-dd1bb4d36cad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\utils\image.h">
@@ -66,6 +72,12 @@
     <ClInclude Include="src\objects\sphere.h">
       <Filter>头文件\src\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\bvh\aabb.h">
+      <Filter>头文件\src\bvh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bvh\bvh.h">
+      <Filter>头文件\src\bvh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\image.cpp">
@@ -73,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bvh\bvh.cpp">
+      <Filter>源文件\src\bvh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

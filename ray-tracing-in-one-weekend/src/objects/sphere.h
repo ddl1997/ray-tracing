@@ -1,4 +1,4 @@
-#ifndef SPHERE_H
+﻿#ifndef SPHERE_H
 #define SPHERE_H
 
 #include "../utils/global.h"
@@ -13,6 +13,7 @@ public:
 
     virtual bool hit(
         const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
+    virtual bool bounding_box(float time0, float time1, Aabb& output_box) const override;
 
 public:
     Eigen::Vector3f center;
@@ -25,7 +26,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
     auto a = r.direction().dot(r.direction());
     auto half_b = oc.dot(r.direction());
     auto c = oc.dot(oc) - radius * radius;
-    auto discriminant = half_b * half_b - a * c;
+    auto discriminant = half_b * half_b - a * c; // 判别式
 
     if (discriminant < 0) return false;
     auto sqrtd = sqrt(discriminant);
@@ -44,6 +45,14 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
     rec.set_face_normal(r, outward_normal);
     rec.mat_ptr = mat_ptr;
 
+    return true;
+}
+
+bool Sphere::bounding_box(float time0, float time1, Aabb& output_box) const
+{
+    output_box = Aabb(
+        center - vec3f(radius, radius, radius),
+        center + vec3f(radius, radius, radius));
     return true;
 }
 
