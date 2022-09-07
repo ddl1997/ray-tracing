@@ -11,6 +11,7 @@ struct HitRecord {
     Eigen::Vector3f normal;
     std::shared_ptr<Material> mat_ptr;
     float t;
+    float u, v; // uv坐标
     bool front_face;
 
     inline void set_face_normal(const Ray& r, const Eigen::Vector3f& outward_normal) {

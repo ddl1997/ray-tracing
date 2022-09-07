@@ -8,22 +8,6 @@
 #include "src/bvh/bvh.h"
 #include <iostream>
 
-//float hit_sphere(const Eigen::Vector3f& center, float radius, const Ray& r) {
-//    Eigen::Vector3f oc = r.start() - center;
-//    auto a = r.direction().dot(r.direction());
-//    auto half_b = oc.dot(r.direction());
-//    auto c = oc.dot(oc) - radius * radius;
-//    auto discriminant = half_b * half_b - a * c;
-//    if (discriminant < 0)
-//    {
-//        return -1.0;
-//    }
-//    else
-//    {
-//        return (-half_b - sqrt(discriminant)) / a;
-//    }
-//}
-
 Eigen::Vector3f ray_color(const Ray& r, const Hittable& world, int depth)
 {
     if (depth <= 0)
@@ -38,8 +22,6 @@ Eigen::Vector3f ray_color(const Ray& r, const Hittable& world, int depth)
         if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
             return multi_respectively(attenuation, ray_color(scattered, world, depth - 1));
         return Eigen::Vector3f(0, 0, 0);
-        //Eigen::Vector3f target = rec.p + random_in_hemisphere(rec.normal);
-        //return 0.5 * ray_color(Ray(rec.p, target - rec.p), world, depth - 1);
     }
     Eigen::Vector3f unit_direction = r.direction().normalized();
     float t = 0.5 * (unit_direction.y() + 1.0);
@@ -107,14 +89,14 @@ int main() {
     const auto aspect_ratio = 16.0 / 9.0;
     const int image_width = 400;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 4;
-    const int max_depth = 5;
+    const int samples_per_pixel = 100;
+    const int max_depth = 20;
 
     // World
     //HittableList world;
     HittableList world = random_scene();
     std::vector<shared_ptr<Hittable>> objects = world.objects;
-    BvhNode root(objects, 0, objects.size(), 0, 1);
+    BvhNode root(objects, 0, objects.size(), 0, 0);
 
     //auto material_ground = make_shared<Lambertian>(Eigen::Vector3f(0.8, 0.8, 0.0));
     //auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.1, 0.2, 0.5));

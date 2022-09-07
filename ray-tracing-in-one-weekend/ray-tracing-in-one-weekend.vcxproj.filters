@@ -78,6 +78,9 @@
     <ClInclude Include="src\bvh\bvh.h">
       <Filter>头文件\src\bvh</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\texture.h">
+      <Filter>头文件\src\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\image.cpp">

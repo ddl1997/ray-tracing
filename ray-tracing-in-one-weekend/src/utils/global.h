@@ -1,12 +1,12 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+// Common Headers
+
 #include <cmath>
 #include <limits>
 #include <memory>
 #include <cstdlib>
-
-// Common Headers
 #include <Eigen/Dense>
 
 // Usings
@@ -16,6 +16,7 @@ using std::make_shared;
 using std::sqrt;
 
 // Type define
+
 typedef Eigen::Vector3f vec3f;
 
 // Constants
