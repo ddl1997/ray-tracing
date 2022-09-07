@@ -36,9 +36,9 @@ public:
         _min.y() = fminf(this->min().y(), box.min().y());
         _min.z() = fminf(this->min().z(), box.min().z());
 
-        _max.x() = fmaxf(this->min().x(), box.min().x());
-        _max.y() = fmaxf(this->min().y(), box.min().y());
-        _max.z() = fmaxf(this->min().z(), box.min().z());
+        _max.x() = fmaxf(this->max().x(), box.max().x());
+        _max.y() = fmaxf(this->max().y(), box.max().y());
+        _max.z() = fmaxf(this->max().z(), box.max().z());
         return Aabb(_min, _max);
     }
 

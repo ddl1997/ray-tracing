@@ -1,28 +1,28 @@
 #include "src/ray/ray.h"
 #include "src/utils/image.h"
-#include "src/ray/hittable_list.h"
 #include "src/objects/sphere.h"
 #include "src/objects/moving_sphere.h"
 #include "src/camera/camera.h"
 #include "src/utils/global.h"
 #include "src/utils/material.h"
+#include "src/bvh/bvh.h"
 #include <iostream>
 
-float hit_sphere(const Eigen::Vector3f& center, float radius, const Ray& r) {
-    Eigen::Vector3f oc = r.start() - center;
-    auto a = r.direction().dot(r.direction());
-    auto half_b = oc.dot(r.direction());
-    auto c = oc.dot(oc) - radius * radius;
-    auto discriminant = half_b * half_b - a * c;
-    if (discriminant < 0)
-    {
-        return -1.0;
-    }
-    else
-    {
-        return (-half_b - sqrt(discriminant)) / a;
-    }
-}
+//float hit_sphere(const Eigen::Vector3f& center, float radius, const Ray& r) {
+//    Eigen::Vector3f oc = r.start() - center;
+//    auto a = r.direction().dot(r.direction());
+//    auto half_b = oc.dot(r.direction());
+//    auto c = oc.dot(oc) - radius * radius;
+//    auto discriminant = half_b * half_b - a * c;
+//    if (discriminant < 0)
+//    {
+//        return -1.0;
+//    }
+//    else
+//    {
+//        return (-half_b - sqrt(discriminant)) / a;
+//    }
+//}
 
 Eigen::Vector3f ray_color(const Ray& r, const Hittable& world, int depth)
 {
@@ -107,12 +107,14 @@ int main() {
     const auto aspect_ratio = 16.0 / 9.0;
     const int image_width = 400;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 10;
+    const int samples_per_pixel = 4;
     const int max_depth = 5;
 
     // World
     //HittableList world;
     HittableList world = random_scene();
+    std::vector<shared_ptr<Hittable>> objects = world.objects;
+    BvhNode root(objects, 0, objects.size(), 0, 1);
 
     //auto material_ground = make_shared<Lambertian>(Eigen::Vector3f(0.8, 0.8, 0.0));
     //auto material_center = make_shared<Lambertian>(Eigen::Vector3f(0.1, 0.2, 0.5));
@@ -154,7 +156,7 @@ int main() {
                 float u = (i + random_float()) / (image_width);
                 float v = (j + random_float()) / (image_height);
                 Ray r = cam.get_ray(u, v);
-                pixel_color += ray_color(r, world, max_depth);
+                pixel_color += ray_color(r, root, max_depth);
             }
             pixel_color = gamma_correction(scale * pixel_color, 2.0);
             img.setPixel(i, j, pixel_color);

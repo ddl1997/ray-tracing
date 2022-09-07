@@ -89,5 +89,8 @@
     <ClCompile Include="src\bvh\bvh.cpp">
       <Filter>源文件\src\bvh</Filter>
     </ClCompile>
+    <ClCompile Include="src\ray\hittable_list.cpp">
+      <Filter>源文件\src\ray</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

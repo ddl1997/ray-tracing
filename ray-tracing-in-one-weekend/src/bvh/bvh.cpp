@@ -2,6 +2,23 @@
 
 #include <iostream>
 
+bool BvhNode::bounding_box(float time0, float time1, Aabb& output_box) const {
+    output_box = box;
+    return true;
+}
+
+bool BvhNode::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
+    if (!box.hit(r, t_min, t_max))
+        return false;
+
+    bool hit_left = left->hit(r, t_min, t_max, rec);
+    bool hit_right = right->hit(r, t_min, hit_left ? rec.t : t_max, rec);
+    // rec.t 指明了在左子树中最早命中的Hittable的命中时间；对于右子树中的Hittable，如果想更新rec，
+    // 只能在tmin到rec.t这一时间段中命中
+
+    return hit_left || hit_right;
+}
+
 inline bool box_compare(const shared_ptr<Hittable> a, const shared_ptr<Hittable> b, int axis) {
     Aabb box_a;
     Aabb box_b;

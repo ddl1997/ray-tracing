@@ -77,6 +77,7 @@ inline Eigen::Vector3f random_in_unit_sphere()
     }*/
     float u = random_float(), v = random_float(-1, 1), r = sqrt(1 - v * v);
     Eigen::Vector3f ref = Eigen::Vector3f{ r * cos(2 * PI * u), v, r * sin(2 * PI * u) };
+    return ref;
 }
 
 inline Eigen::Vector3f random_in_hemisphere(const Eigen::Vector3f& normal)
